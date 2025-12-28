@@ -3,105 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>價格追蹤小幫手</title>
+    <title>天空藍比價清單</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f3f4f6; }
+        body { 
+            font-family: 'Noto Sans TC', sans-serif; 
+            background-color: #e0f2fe; /* 天空藍背景 */
+        }
+        .sky-gradient {
+            background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+        }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
-            📊 產品比價清單
-        </h1>
+    <div class="max-w-5xl mx-auto">
+        <div class="sky-gradient p-6 rounded-t-2xl shadow-lg">
+            <h1 class="text-3xl font-bold text-white flex items-center gap-2">
+                ☁️ 產品比價追蹤
+            </h1>
+            <p class="text-sky-100 mt-2">記錄每一筆划算的交易</p>
+        </div>
 
-        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">產品名稱</label>
-                    <input type="text" id="pName" placeholder="例如：iPhone 15" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 border">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">比價通路</label>
-                    <select id="pChannel" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 border">
-                        <option value="蝦皮購物">蝦皮購物</option>
-                        <option value="實體店面">實體店面</option>
-                        <option value="Momo">Momo</option>
-                        <option value="其他">其他</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">比價日期</label>
-                    <input type="date" id="pDate" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 border">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">商品網址 (自動抓取用)</label>
-                    <div class="flex gap-2">
-                        <input type="url" id="pUrl" placeholder="https://..." class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 border">
-                        <button onclick="fetchPrice()" class="mt-1 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">抓取</button>
+        <div class="bg-white p-6 rounded-b-2xl shadow-md mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-sky-700">產品名稱</label>
+                        <input type="text" id="pName" placeholder="例如：iPad Air" class="mt-1 block w-full border-sky-200 rounded-lg shadow-sm p-3 border focus:ring-sky-500 focus:border-sky-500">
                     </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">手動輸入價格</label>
-                    <input type="number" id="pPrice" placeholder="抓取失敗可手動輸入" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 border">
-                </div>
-            </div>
-            <button onclick="addEntry()" class="mt-6 w-full bg-indigo-600 text-white font-bold py-3 rounded-md hover:bg-indigo-700 transition">
-                加入比價清單
-            </button>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-md overflow-hidden">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">產品</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">通路</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">價格</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">日期</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">操作</th>
-                    </tr>
-                </thead>
-                <tbody id="priceList" class="divide-y divide-gray-200">
-                    </tbody>
-            </table>
-        </div>
-    </div>
-
-    <script>
-        // 設定預設日期為今天
-        document.getElementById('pDate').valueAsDate = new Date();
-
-        function fetchPrice() {
-            const url = document.getElementById('pUrl').value;
-            if(!url) return alert('請先輸入網址');
-            
-            alert('提示：由於瀏覽器安全限制，前端無法直接跨域爬蟲。這部分通常需要後端 API 支援。\n現在為您模擬抓取成功！');
-            // 模擬抓取回來的價格
-            document.getElementById('pPrice').value = Math.floor(Math.random() * 1000) + 500;
-        }
-
-        function addEntry() {
-            const name = document.getElementById('pName').value;
-            const channel = document.getElementById('pChannel').value;
-            const date = document.getElementById('pDate').value;
-            const price = document.getElementById('pPrice').value;
-
-            if(!name || !price) return alert('請填寫完整資訊');
-
-            const tbody = document.getElementById('priceList');
-            const row = `
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 font-medium text-gray-900">${name}</td>
-                    <td class="px-6 py-4 text-gray-600">${channel}</td>
-                    <td class="px-6 py-4 text-indigo-600 font-bold">$${price}</td>
-                    <td class="px-6 py-4 text-gray-500">${date}</td>
-                    <td class="px-6 py-4"><button onclick="this.parentElement.parentElement.remove()" class="text-red-500 hover:text-red-700">刪除</button></td>
-                </tr>
-            `;
-            tbody.insertAdjacentHTML('afterbegin', row);
+                    <div>
+                        <label class="block text-sm font-bold text-sky-700">比價通路</label>
+                        <select id="pChannel" class="mt-1 block w-full border-sky-200 rounded-lg shadow-sm p-3 border">
+                            <option value="蝦皮購物">🧡 蝦皮購物</option>
+                            <option value="實體店面">🏪 實體店面</option>
+                            <option
             
             // 清空輸入
             document.getElementById('pName').value = '';
