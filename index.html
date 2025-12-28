@@ -24,4 +24,138 @@
             <p class="opacity-90 mt-2">輸入網址後點擊預覽，快速掌握最新價格</p>
         </div>
 
-        <div class="
+        <div class="bg-white p-6 shadow-md border-x border-sky-100">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="space-y-1">
+                    <label class="text-sm font-bold text-sky-700">產品名稱</label>
+                    <input type="text" id="pName" placeholder="例如：iPad Air" class="w-full border-sky-200 rounded-lg p-2.5 border focus:ring-2 focus:ring-sky-400 outline-none">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-sm font-bold text-sky-700">比價通路</label>
+                    <select id="pChannel" class="w-full border-sky-200 rounded-lg p-2.5 border focus:ring-2 focus:ring-sky-400 outline-none">
+                        <option value="蝦皮購物">蝦皮購物</option>
+                        <option value="實體店面">實體店面</option>
+                        <option value="Momo">Momo 購物</option>
+                        <option value="PChome">PChome</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-sm font-bold text-sky-700">比價日期</label>
+                    <input type="date" id="pDate" class="w-full border-sky-200 rounded-lg p-2.5 border focus:ring-2 focus:ring-sky-400 outline-none">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="text-sm font-bold text-sky-700">輸入價格</label>
+                    <input type="number" id="pPrice" placeholder="金額" class="w-full border-sky-200 rounded-lg p-2.5 border focus:ring-2 focus:ring-sky-400 outline-none">
+                </div>
+            </div>
+
+            <div class="mt-4 flex flex-col md:flex-row gap-3 items-end">
+                <div class="flex-grow space-y-1 w-full">
+                    <label class="text-sm font-bold text-sky-700">商品網址</label>
+                    <input type="url" id="pUrl" placeholder="https://..." class="w-full border-sky-200 rounded-lg p-2.5 border focus:ring-2 focus:ring-sky-400 outline-none">
+                </div>
+                <button onclick="previewLink()" class="w-full md:w-32 bg-sky-100 text-sky-600 font-bold py-2.5 rounded-lg border border-sky-300 hover:bg-sky-200 transition">
+                    開啟預覽 ↗
+                </button>
+                <button onclick="addEntry()" class="w-full md:w-48 sky-theme text-white font-bold py-2.5 rounded-lg shadow hover:opacity-90 transition transform active:scale-95">
+                    加入清單
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-b-3xl shadow-xl overflow-hidden border-t border-sky-100">
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-left">
+                    <thead class="bg-sky-50">
+                        <tr>
+                            <th class="px-6 py-4 text-sky-800 font-bold">日期</th>
+                            <th class="px-6 py-4 text-sky-800 font-bold">產品</th>
+                            <th class="px-6 py-4 text-sky-800 font-bold">通路</th>
+                            <th class="px-6 py-4 text-sky-800 font-bold">價格</th>
+                            <th class="px-6 py-4 text-sky-800 font-bold">連結</th>
+                            <th class="px-6 py-4 text-center text-sky-800 font-bold">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="priceList" class="divide-y divide-sky-50">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. 初始化設定
+        document.getElementById('pDate').valueAsDate = new Date();
+        let items = JSON.parse(localStorage.getItem('priceItems')) || [];
+        renderList();
+
+        // 2. 預覽網址功能
+        function previewLink() {
+            const url = document.getElementById('pUrl').value;
+            if (url) {
+                window.open(url, '_blank');
+            } else {
+                alert('請先貼上商品網址');
+            }
+        }
+
+        // 3. 加入清單功能
+        function addEntry() {
+            const name = document.getElementById('pName').value;
+            const channel = document.getElementById('pChannel').value;
+            const date = document.getElementById('pDate').value;
+            const price = document.getElementById('pPrice').value;
+            const url = document.getElementById('pUrl').value;
+
+            if (!name || !price) return alert('請填寫產品名稱與價格');
+
+            const newItem = {
+                id: Date.now(),
+                name, channel, date, price, url
+            };
+
+            items.unshift(newItem); // 加到最前面
+            saveAndRender();
+            
+            // 重置欄位
+            document.getElementById('pName').value = '';
+            document.getElementById('pPrice').value = '';
+            document.getElementById('pUrl').value = '';
+        }
+
+        // 4. 刪除功能
+        function deleteItem(id) {
+            items = items.filter(item => item.id !== id);
+            saveAndRender();
+        }
+
+        // 5. 儲存與渲染
+        function saveAndRender() {
+            localStorage.setItem('priceItems', JSON.stringify(items));
+            renderList();
+        }
+
+        function renderList() {
+            const tbody = document.getElementById('priceList');
+            tbody.innerHTML = items.map(item => `
+                <tr class="hover:bg-sky-50/50 transition">
+                    <td class="px-6 py-4 text-gray-500 text-sm">${item.date}</td>
+                    <td class="px-6 py-4 font-bold text-gray-800">${item.name}</td>
+                    <td class="px-6 py-4"><span class="px-2 py-1 bg-sky-100 text-sky-600 rounded text-xs">${item.channel}</span></td>
+                    <td class="px-6 py-4 font-black text-sky-600">$${Number(item.price).toLocaleString()}</td>
+                    <td class="px-6 py-4">
+                        ${item.url ? `<a href="${item.url}" target="_blank" class="text-sky-400 hover:text-sky-600 text-sm">點我打開</a>` : '-'}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <button onclick="deleteItem(${item.id})" class="text-red-300 hover:text-red-500 transition">刪除</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
