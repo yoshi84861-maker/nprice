@@ -10,100 +10,110 @@
         body { 
             font-family: 'Noto Sans TC', sans-serif; 
             background-color: #f0f9ff; 
+            padding: 15px;
         }
-        .sky-theme { background: linear-gradient(135deg, #7dd3fc 0%, #0ea5e9 100%); }
+        /* 強調按鈕顏色 */
+        .btn-add {
+            background-color: #0284c7; /* 深天空藍 */
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+        .btn-add:hover { background-color: #0369a1; }
+        .btn-preview {
+            background-color: #ffffff;
+            color: #0284c7;
+            border: 2px solid #0284c7;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .btn-preview:hover { background-color: #f0f9ff; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
 
-    <div class="max-w-5xl mx-auto">
-        <div class="sky-theme p-8 rounded-t-3xl shadow-lg text-white">
-            <h1 class="text-3xl font-bold flex items-center gap-3">
-                ☁️ 產品比價清單
-            </h1>
-            <p class="opacity-90 mt-2">輸入網址後點擊預覽，快速掌握最新價格</p>
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-sky-500 p-6 rounded-t-3xl shadow-lg text-white text-center">
+            <h1 class="text-2xl font-bold tracking-wider">☁️ 產品比價清單</h1>
+            <p class="text-sky-100 text-sm mt-1">輕鬆記錄通路價格，找出最划算的選擇</p>
         </div>
 
-        <div class="bg-white p-6 shadow-md border-x border-sky-100">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="space-y-1">
-                    <label class="text-sm font-bold text-sky-700">產品名稱</label>
-                    <input type="text" id="pName" placeholder="例如：iPad Air" class="w-full border-sky-200 rounded-lg p-2.5 border focus:ring-2 focus:ring-sky-400 outline-none">
+        <div class="bg-white p-6 shadow-md rounded-b-3xl mb-6 border border-sky-100">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                <div>
+                    <label class="block text-sm font-bold text-sky-700 mb-2">產品名稱</label>
+                    <input type="text" id="pName" placeholder="輸入產品名稱" class="w-full border-sky-200 rounded-xl p-3 border outline-none focus:ring-2 focus:ring-sky-400">
                 </div>
-
-                <div class="space-y-1">
-                    <label class="text-sm font-bold text-sky-700">比價通路</label>
-                    <select id="pChannel" class="w-full border-sky-200 rounded-lg p-2.5 border focus:ring-2 focus:ring-sky-400 outline-none">
-                        <option value="蝦皮購物">蝦皮購物</option>
-                        <option value="實體店面">實體店面</option>
-                        <option value="Momo">Momo 購物</option>
-                        <option value="PChome">PChome</option>
-                        <option value="其他">其他</option>
+                <div>
+                    <label class="block text-sm font-bold text-sky-700 mb-2">比價通路</label>
+                    <select id="pChannel" class="w-full border-sky-200 rounded-xl p-3 border outline-none bg-white">
+                        <option value="蝦皮">蝦皮</option>
+                        <option value="momo">momo</option>
+                        <option value="酷彭">酷彭</option>
+                        <option value="實體">實體</option>
                     </select>
                 </div>
-
-                <div class="space-y-1">
-                    <label class="text-sm font-bold text-sky-700">比價日期</label>
-                    <input type="date" id="pDate" class="w-full border-sky-200 rounded-lg p-2.5 border focus:ring-2 focus:ring-sky-400 outline-none">
+                <div>
+                    <label class="block text-sm font-bold text-sky-700 mb-2">比價日期</label>
+                    <input type="date" id="pDate" class="w-full border-sky-200 rounded-xl p-3 border outline-none">
                 </div>
-
-                <div class="space-y-1">
-                    <label class="text-sm font-bold text-sky-700">輸入價格</label>
-                    <input type="number" id="pPrice" placeholder="金額" class="w-full border-sky-200 rounded-lg p-2.5 border focus:ring-2 focus:ring-sky-400 outline-none">
+                <div>
+                    <label class="block text-sm font-bold text-sky-700 mb-2">輸入價格</label>
+                    <input type="number" id="pPrice" placeholder="請輸入金額" class="w-full border-sky-200 rounded-xl p-3 border outline-none">
                 </div>
             </div>
 
-            <div class="mt-4 flex flex-col md:flex-row gap-3 items-end">
-                <div class="flex-grow space-y-1 w-full">
-                    <label class="text-sm font-bold text-sky-700">商品網址</label>
-                    <input type="url" id="pUrl" placeholder="https://..." class="w-full border-sky-200 rounded-lg p-2.5 border focus:ring-2 focus:ring-sky-400 outline-none">
-                </div>
-                <button onclick="previewLink()" class="w-full md:w-32 bg-sky-100 text-sky-600 font-bold py-2.5 rounded-lg border border-sky-300 hover:bg-sky-200 transition">
-                    開啟預覽 ↗
+            <div class="mb-6">
+                <label class="block text-sm font-bold text-sky-700 mb-2">商品網址 (貼上後可點擊下方預覽)</label>
+                <input type="url" id="pUrl" placeholder="https://..." class="w-full border-sky-200 rounded-xl p-3 border outline-none">
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button onclick="previewLink()" class="btn-preview flex-1 transition-all">
+                    🔗 前往商品頁預覽
                 </button>
-                <button onclick="addEntry()" class="w-full md:w-48 sky-theme text-white font-bold py-2.5 rounded-lg shadow hover:opacity-90 transition transform active:scale-95">
-                    加入清單
+                <button onclick="addEntry()" class="btn-add flex-1 transition-all">
+                    💾 加入比價清單
                 </button>
             </div>
         </div>
 
-        <div class="bg-white rounded-b-3xl shadow-xl overflow-hidden border-t border-sky-100">
-            <div class="overflow-x-auto">
-                <table class="min-w-full text-left">
-                    <thead class="bg-sky-50">
-                        <tr>
-                            <th class="px-6 py-4 text-sky-800 font-bold">日期</th>
-                            <th class="px-6 py-4 text-sky-800 font-bold">產品</th>
-                            <th class="px-6 py-4 text-sky-800 font-bold">通路</th>
-                            <th class="px-6 py-4 text-sky-800 font-bold">價格</th>
-                            <th class="px-6 py-4 text-sky-800 font-bold">連結</th>
-                            <th class="px-6 py-4 text-center text-sky-800 font-bold">操作</th>
-                        </tr>
-                    </thead>
-                    <tbody id="priceList" class="divide-y divide-sky-50">
-                        </tbody>
-                </table>
-            </div>
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-sky-50">
+            <table class="min-w-full text-left">
+                <thead class="bg-sky-50 text-sky-800 border-b border-sky-100">
+                    <tr>
+                        <th class="px-5 py-4 font-bold">產品資訊</th>
+                        <th class="px-5 py-4 font-bold">價格</th>
+                        <th class="px-5 py-4 font-bold">日期</th>
+                        <th class="px-5 py-4 text-center font-bold">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="priceList" class="divide-y divide-sky-50">
+                    </tbody>
+            </table>
         </div>
     </div>
 
     <script>
-        // 1. 初始化設定
+        // 設定預設日期
         document.getElementById('pDate').valueAsDate = new Date();
-        let items = JSON.parse(localStorage.getItem('priceItems')) || [];
+        
+        // 從瀏覽器存儲讀取資料
+        let items = JSON.parse(localStorage.getItem('priceList_v2')) || [];
         renderList();
 
-        // 2. 預覽網址功能
         function previewLink() {
             const url = document.getElementById('pUrl').value;
-            if (url) {
+            if (url && url.startsWith('http')) {
                 window.open(url, '_blank');
             } else {
-                alert('請先貼上商品網址');
+                alert('請輸入完整的網址 (需包含 http 或 https)');
             }
         }
 
-        // 3. 加入清單功能
         function addEntry() {
             const name = document.getElementById('pName').value;
             const channel = document.getElementById('pChannel').value;
@@ -111,47 +121,54 @@
             const price = document.getElementById('pPrice').value;
             const url = document.getElementById('pUrl').value;
 
-            if (!name || !price) return alert('請填寫產品名稱與價格');
+            if (!name || !price) {
+                alert('請輸入產品名稱與價格');
+                return;
+            }
 
-            const newItem = {
-                id: Date.now(),
-                name, channel, date, price, url
-            };
-
-            items.unshift(newItem); // 加到最前面
+            const item = { id: Date.now(), name, channel, date, price, url };
+            items.unshift(item); // 最新的排在最上面
             saveAndRender();
             
-            // 重置欄位
+            // 加入後清空輸入框 (日期保留)
             document.getElementById('pName').value = '';
             document.getElementById('pPrice').value = '';
             document.getElementById('pUrl').value = '';
         }
 
-        // 4. 刪除功能
         function deleteItem(id) {
-            items = items.filter(item => item.id !== id);
-            saveAndRender();
+            if(confirm('確定要刪除這筆紀錄嗎？')) {
+                items = items.filter(i => i.id !== id);
+                saveAndRender();
+            }
         }
 
-        // 5. 儲存與渲染
         function saveAndRender() {
-            localStorage.setItem('priceItems', JSON.stringify(items));
+            localStorage.setItem('priceList_v2', JSON.stringify(items));
             renderList();
         }
 
         function renderList() {
             const tbody = document.getElementById('priceList');
-            tbody.innerHTML = items.map(item => `
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-10 text-center text-gray-400">目前沒有資料，快去比價吧！</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = items.map(i => `
                 <tr class="hover:bg-sky-50/50 transition">
-                    <td class="px-6 py-4 text-gray-500 text-sm">${item.date}</td>
-                    <td class="px-6 py-4 font-bold text-gray-800">${item.name}</td>
-                    <td class="px-6 py-4"><span class="px-2 py-1 bg-sky-100 text-sky-600 rounded text-xs">${item.channel}</span></td>
-                    <td class="px-6 py-4 font-black text-sky-600">$${Number(item.price).toLocaleString()}</td>
-                    <td class="px-6 py-4">
-                        ${item.url ? `<a href="${item.url}" target="_blank" class="text-sky-400 hover:text-sky-600 text-sm">點我打開</a>` : '-'}
+                    <td class="px-5 py-4">
+                        <div class="font-bold text-gray-800">${i.name}</div>
+                        <div class="text-xs text-sky-500 font-medium">${i.channel}</div>
                     </td>
-                    <td class="px-6 py-4 text-center">
-                        <button onclick="deleteItem(${item.id})" class="text-red-300 hover:text-red-500 transition">刪除</button>
+                    <td class="px-5 py-4">
+                        <span class="text-lg font-black text-sky-600">$${Number(i.price).toLocaleString()}</span>
+                    </td>
+                    <td class="px-5 py-4 text-sm text-gray-400">${i.date}</td>
+                    <td class="px-5 py-4">
+                        <div class="flex flex-col items-center gap-2">
+                            ${i.url ? `<a href="${i.url}" target="_blank" class="text-xs bg-sky-100 text-sky-600 px-2 py-1 rounded hover:bg-sky-200">開啟連結</a>` : ''}
+                            <button onclick="deleteItem(${i.id})" class="text-xs text-red-400 hover:text-red-600">刪除</button>
+                        </div>
                     </td>
                 </tr>
             `).join('');
