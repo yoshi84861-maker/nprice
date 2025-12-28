@@ -3,47 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>天空藍比價清單</title>
+    <title>天空藍比價小幫手</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
         body { 
             font-family: 'Noto Sans TC', sans-serif; 
-            background-color: #e0f2fe; /* 天空藍背景 */
+            background-color: #f0f9ff; 
         }
-        .sky-gradient {
-            background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
-        }
+        .sky-theme { background: linear-gradient(135deg, #7dd3fc 0%, #0ea5e9 100%); }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
     <div class="max-w-5xl mx-auto">
-        <div class="sky-gradient p-6 rounded-t-2xl shadow-lg">
-            <h1 class="text-3xl font-bold text-white flex items-center gap-2">
-                ☁️ 產品比價追蹤
+        <div class="sky-theme p-8 rounded-t-3xl shadow-lg text-white">
+            <h1 class="text-3xl font-bold flex items-center gap-3">
+                ☁️ 產品比價清單
             </h1>
-            <p class="text-sky-100 mt-2">記錄每一筆划算的交易</p>
+            <p class="opacity-90 mt-2">輸入網址後點擊預覽，快速掌握最新價格</p>
         </div>
 
-        <div class="bg-white p-6 rounded-b-2xl shadow-md mb-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-bold text-sky-700">產品名稱</label>
-                        <input type="text" id="pName" placeholder="例如：iPad Air" class="mt-1 block w-full border-sky-200 rounded-lg shadow-sm p-3 border focus:ring-sky-500 focus:border-sky-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-sky-700">比價通路</label>
-                        <select id="pChannel" class="mt-1 block w-full border-sky-200 rounded-lg shadow-sm p-3 border">
-                            <option value="蝦皮購物">🧡 蝦皮購物</option>
-                            <option value="實體店面">🏪 實體店面</option>
-                            <option
-            
-            // 清空輸入
-            document.getElementById('pName').value = '';
-            document.getElementById('pPrice').value = '';
-        }
-    </script>
-</body>
-</html>
+        <div class="
