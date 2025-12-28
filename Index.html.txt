@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>記帳小幫手</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6c5ce7">
+    <style>
+        :root { --primary-color: #6c5ce7; --secondary-color: #a29bfe; --bg-color: #f0f2f5; --card-bg: #ffffff; --text-main: #2d3436; --text-sub: #636e72; --danger: #ff7675; }
+        * { box-sizing: border-box; font-family: sans-serif; margin: 0; padding: 0; }
+        body { background-color: var(--bg-color); display: flex; justify-content: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 500px; background: var(--bg-color); display: flex; flex-direction: column; }
+        header { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 30px 20px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
+        .total-amount { font-size: 2.5rem; font-weight: bold; }
+        .input-card { background: var(--card-bg); margin: -20px 20px 20px 20px; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; margin-bottom: 10px; }
+        .add-btn { width: 100%; padding: 15px; background-color: var(--primary-color); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; }
+        .list-container { flex: 1; padding: 0 20px 20px 20px; }
+        .item-card { background: white; padding: 15px; border-radius: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .delete-btn { color: var(--danger); font-size: 0.8rem; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <header><p>累計支出</p><div class="total-section">$ <span id="totalAmount" class="total-amount">0</span></div></header>
+    <div class="input-card">
+        <input type="text" id="desc" placeholder="用途 (例如：午餐)">
+        <div style="display: flex; gap: 10px;"><input type="number" id="amount" placeholder="金額"><select id="method"><option value="現金">現金</option><option value="刷卡">刷卡</option><option value="Line Pay">Line Pay</option></select></div>
+        <button class="add-btn" onclick="addItem()">新增支出</button>
+    </div>
+    <div class="list-container" id="listContainer"></div>
+</div>
+<script>
+    let records = JSON.parse(localStorage.getItem('myExpenses')) || [];
+    function updateUI() {
+        const container = document.getElementById('listContainer');
+        const totalDisplay = document.getElementById('totalAmount');
+        container.innerHTML = ''; let total = 0;
+        records.forEach((item, index) => {
+            total += parseInt(item.amount);
+            const card = document.createElement('div'); card.className = 'item-card';
+            card.innerHTML = `<div><b>${item.desc}</b><br><small>${item.method}</small></div><div style="text-align:right"><b>$${item.amount}</b><br><span class="delete-btn" onclick="deleteItem(${index})">刪除</span></div>`;
+            container.appendChild(card);
+        });
+        totalDisplay.innerText = total.toLocaleString();
+        localStorage.setItem('myExpenses', JSON.stringify(records));
+    }
+    function addItem() {
+        const desc = document.getElementById('desc').value; const amount = document.getElementById('amount').value; const method = document.getElementById('method').value;
+        if (!desc || !amount) return alert('請填寫完整');
+        records.unshift({ desc, amount: parseInt(amount), method });
+        updateUI(); document.getElementById('desc').value = ''; document.getElementById('amount').value = '';
+    }
+    function deleteItem(index) { if(confirm('確定刪除？')) { records.splice(index, 1); updateUI(); } }
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
+    updateUI();
+</script>
+</body>
+</html>
